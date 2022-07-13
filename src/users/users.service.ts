@@ -1,52 +1,33 @@
-import { DeleteUserInput } from './input/delete-user.input';
-import { GetUsersArgs } from './dto/args/get-users-args';
-import { UpdateUserInput } from './input/update-user.input';
-import { CreateUserInput } from './input/create-user.input';
+import { CreateUserInput } from './dto/input/create-user.input';
 import { Injectable } from '@nestjs/common';
 import { User } from './models/user';
 import { v4 as uuidv4 } from 'uuid';
-import { GetUserArgs } from './dto/args/get-user.args';
+import { GetUserAuth } from './dto/args/get-user-auth.args';
+import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
 @Injectable()
 export class UserService {
-  private users: User[] = [];
+  client: AxiosInstance;
+  constructor() {
+    this.client = axios.create({
+      baseURL: process.env.USER_API,
+    });
+  }
 
-  public createUser(createUserData: CreateUserInput): User {
+  public async createUser(createUserData: CreateUserInput): Promise<User> {
+    console.log(createUserData);
     const user: User = {
-      _id: uuidv4(),
       ...createUserData,
     };
 
-    this.users.push(user);
-
-    return user;
+    const res = await this.client.post('register', user);
+    return res.data;
   }
 
-  public updateUser(updateUserData: UpdateUserInput): User {
-    const user = this.users.find((user) => user._id === updateUserData._id);
-
-    Object.assign(user, updateUserData);
-
-    return user;
-  }
-
-  public getUser(getUserArgs: GetUserArgs): User {
-    return this.users.find((user) => user._id === getUserArgs._id);
-  }
-
-  public getUsers(getUsersArgs: GetUsersArgs): User[] {
-    return getUsersArgs._ids.map((_id) => this.getUser({ _id }));
-  }
-
-  public deleteUser(deleteUserData: DeleteUserInput): User {
-    const userIndex = this.users.findIndex(
-      (user) => user._id === deleteUserData._id,
-    );
-
-    const user = this.users[userIndex];
-
-    this.users.splice(userIndex);
-
-    return user;
+  public async getAuth(
+    authUserData: GetUserAuth,
+  ): Promise<AxiosResponse<{ jwt: string }>> {
+    const res = await this.client.post('login', authUserData);
+    return res.data.jwt;
   }
 }
