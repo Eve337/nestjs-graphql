@@ -1,7 +1,6 @@
 import { CreateUserInput } from './dto/input/create-user.input';
 import { Injectable } from '@nestjs/common';
 import { User } from './models/user';
-import { v4 as uuidv4 } from 'uuid';
 import { GetUserAuth } from './dto/args/get-user-auth.args';
 import axios, { AxiosInstance, AxiosResponse } from 'axios';
 
