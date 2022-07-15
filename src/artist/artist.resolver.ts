@@ -1,3 +1,4 @@
+import { Artist } from 'src/artist/models/artist';
 import { NewArtist } from './models/artist';
 import {
   Args,
@@ -11,21 +12,21 @@ import {
 import { ArtistService } from './artist.service';
 import { BandService } from 'src/band/band.service';
 
-@Resolver('Artist')
+@Resolver(() => Artist)
 export class ArtistsResolver {
   constructor(
     private readonly artistsService: ArtistService,
     private readonly bandsService: BandService,
   ) {}
-  @Query('artist')
+  @Query(() => Artist, { name: 'artist', nullable: true })
   artist(@Args('id') id: string) {
     return this.artistsService.getArtist(id);
   }
-  @Query('artists')
+  @Query(() => Artist, { name: 'artists', nullable: true })
   artists(@Args('limit') limit: number, @Args('offset') offset: number) {
     return this.artistsService.getArtists(limit, offset);
   }
-  @Mutation('createArtist')
+  @Mutation(() => Artist, { name: 'createArtist', nullable: true })
   createArtist(
     @Args('artist') artist: NewArtist,
     @Context('token') token: string,
@@ -33,7 +34,7 @@ export class ArtistsResolver {
     return this.artistsService.createArtist(artist, token);
   }
 
-  @Mutation('updateArtist')
+  @Mutation(() => Artist, { name: 'updateArtist', nullable: true })
   updateArtist(
     @Args('id') id: string,
     @Args('updateArtist') artist: NewArtist,
@@ -41,7 +42,7 @@ export class ArtistsResolver {
   ) {
     return this.artistsService.updateArtist(id, artist, token);
   }
-  @Mutation('deleteArtist')
+  @Mutation(() => Artist, { name: 'deleteArtist', nullable: true })
   deleteArtist(@Args('id') id: string, @Context('token') token: string) {
     return this.artistsService.deleteArtist(id, token);
   }

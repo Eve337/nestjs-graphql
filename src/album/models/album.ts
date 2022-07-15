@@ -1,4 +1,4 @@
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ID, InputType, Int, ObjectType } from '@nestjs/graphql';
 import { IsNotEmpty } from 'class-validator';
 import { Artist } from 'src/artist/models/artist';
 import { Band } from 'src/band/models/band';
@@ -34,6 +34,40 @@ export class Album {
   @Field(() => [Genre], { nullable: true })
   @IsNotEmpty()
   genres: Genre[];
+
+  @Field(() => String, { nullable: true })
+  @IsNotEmpty()
+  image: string;
+}
+@InputType()
+export class NewAlbum {
+  @Field(() => ID, { nullable: true })
+  @IsNotEmpty()
+  id: string;
+
+  @Field(() => String, { nullable: true })
+  @IsNotEmpty()
+  name: string;
+
+  @Field(() => Int, { nullable: true })
+  @IsNotEmpty()
+  released: number;
+
+  @Field(() => [String], { nullable: true })
+  @IsNotEmpty()
+  artists: string[];
+
+  @Field(() => [String], { nullable: true })
+  @IsNotEmpty()
+  bands: string[];
+
+  @Field(() => [String], { nullable: true })
+  @IsNotEmpty()
+  tracks: string[];
+
+  @Field(() => [String], { nullable: true })
+  @IsNotEmpty()
+  genres: string[];
 
   @Field(() => String, { nullable: true })
   @IsNotEmpty()

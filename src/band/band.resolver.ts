@@ -13,7 +13,7 @@ import { GenreService } from 'src/genre/genre.service';
 import { BandService } from './band.service';
 import { ArtistService } from 'src/artist/artist.service';
 
-@Resolver('Band')
+@Resolver(() => Band)
 export class BandsResolver {
   constructor(
     private readonly bandsService: BandService,
@@ -28,12 +28,12 @@ export class BandsResolver {
   getBands(@Args('limit') limit: number, @Args('offset') offset: number) {
     return this.bandsService.getBands(limit, offset);
   }
-  @Mutation('createBand')
+  @Mutation(() => Band, { name: 'createBand', nullable: true })
   createBand(@Args('band') band: NewBand, @Context('token') token: string) {
     return this.bandsService.createBand(band, token);
   }
 
-  @Mutation('updateBand')
+  @Mutation(() => Band, { name: 'updateBand', nullable: true })
   updateBand(
     @Args('id') id: string,
     @Args('band') band: NewBand,
@@ -41,7 +41,7 @@ export class BandsResolver {
   ) {
     return this.bandsService.updateBand(id, band, token);
   }
-  @Mutation('deleteBand')
+  @Mutation(() => Band, { name: 'deleteBand', nullable: true })
   deleteBand(@Args('id') id: string, @Context('token') token: string) {
     return this.bandsService.deleteBand(id, token);
   }

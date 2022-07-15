@@ -1,3 +1,5 @@
+import { NewTrack } from './../track/models/track';
+import { NewAlbum } from './../album/models/album';
 import { NewBand } from './../band/models/band';
 import { AxiosInstance } from 'axios';
 import { NewGenre } from 'src/genre/models/genre';
@@ -58,7 +60,7 @@ export const updateItem = async (
   }
 };
 export const createItem = async (
-  item: NewGenre | NewBand | NewArtist,
+  item: NewGenre | NewBand | NewArtist | NewAlbum | NewTrack,
   token: string,
   axiosClient: AxiosInstance,
 ) => {
