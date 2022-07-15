@@ -14,7 +14,6 @@ export class UserService {
   }
 
   public async createUser(createUserData: CreateUserInput): Promise<User> {
-    console.log(createUserData);
     const user: User = {
       ...createUserData,
     };

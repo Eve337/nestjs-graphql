@@ -6,7 +6,7 @@ import { Genre } from 'src/genre/models/genre';
 import { Track } from 'src/track/models/track';
 
 @ObjectType()
-export class Album {
+export class Favourites {
   @Field(() => ID, { nullable: true })
   @IsNotEmpty()
   id: string;

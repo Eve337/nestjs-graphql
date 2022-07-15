@@ -1,5 +1,5 @@
 import { GetUserAuth } from './dto/args/get-user-auth.args';
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation, Context } from '@nestjs/graphql';
 
 import { User } from './models/user';
 import { UserService } from './users.service';
@@ -13,6 +13,7 @@ export class UsersResolver {
   @Query(() => String, { name: 'JWT', nullable: true })
   async getUserAuth(
     @Args() bodyLog: GetUserAuth,
+    @Context() token: any,
   ): Promise<AxiosResponse<{ jwt: string }>> {
     return this.usersService.getAuth(bodyLog);
   }
@@ -20,6 +21,7 @@ export class UsersResolver {
   @Mutation(() => User)
   async registerUser(
     @Args('createUserData') createUserData: CreateUserInput,
+    @Context() token: any,
   ): Promise<User> {
     return this.usersService.createUser(createUserData);
   }
