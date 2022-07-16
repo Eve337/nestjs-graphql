@@ -1,6 +1,16 @@
+import { Field, ObjectType } from '@nestjs/graphql';
+
+@ObjectType()
 export class User {
-  userId: string;
+  @Field(() => String)
+  firstName: string;
+
+  @Field(() => String)
+  lastName: string;
+
+  @Field(() => String)
   email: string;
-  age: number;
-  isSubscribed: boolean;
+
+  @Field(() => String)
+  password: string;
 }

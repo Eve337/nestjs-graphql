@@ -1,20 +1,28 @@
-import { GetUserArgs } from './dto/args/get-user.args';
-import { Resolver, Query, Args } from '@nestjs/graphql';
+import { GetUserAuth } from './dto/args/get-user-auth.args';
+import { Resolver, Query, Args, Mutation, Context } from '@nestjs/graphql';
 
 import { User } from './models/user';
 import { UserService } from './users.service';
+import { CreateUserInput } from './dto/input/create-user.input';
+import { AxiosResponse } from 'axios';
 
 @Resolver(() => User)
 export class UsersResolver {
   constructor(private readonly usersService: UserService) {}
 
-  @Query(() => User, { name: 'user', nullable: true })
-  getUser(@Args() getUserArgs: GetUserArgs): User {
-    return this.usersService.getUser();
+  @Query(() => String, { name: 'JWT', nullable: true })
+  async getUserAuth(
+    @Args() bodyLog: GetUserAuth,
+    @Context() token: any,
+  ): Promise<AxiosResponse<{ jwt: string }>> {
+    return this.usersService.getAuth(bodyLog);
   }
 
-  @Query(() => [User], { name: 'users', nullable: 'items' })
-  getUsers(@Args() getUserArgs: GetUserArgs): User[] {
-    return this.usersService.getUsers();
+  @Mutation(() => User)
+  async registerUser(
+    @Args('createUserData') createUserData: CreateUserInput,
+    @Context() token: any,
+  ): Promise<User> {
+    return this.usersService.createUser(createUserData);
   }
 }
